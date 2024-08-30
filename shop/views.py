@@ -4,9 +4,29 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 
 # Importa formulário de criação de usuário
 from .forms import CustomUserCreationForm, CustomLoginForm
+
+# shop/views.py
+from shop.models import PapeisDeUsuario
+
+
+def index(request):
+    user = request.user
+    if user.is_authenticated:
+        papel = user.get_papel()
+        if papel == PapeisDeUsuario.ADMINISTRADOR:
+            return redirect(reverse("admin-index"))
+        elif papel == PapeisDeUsuario.CLIENTE:
+            return redirect(reverse("home"))
+        elif papel == PapeisDeUsuario.VENDEDOR:
+            return redirect(reverse("vendedor-index"))
+        elif papel == PapeisDeUsuario.ESTOQUISTA:
+            return redirect(reverse("estoquista-index"))
+    else:
+        return redirect(reverse("login"))
 
 
 @login_required
@@ -31,6 +51,14 @@ class CustomLoginView(LoginView):
     form_class = CustomLoginForm
     template_name = "registration/login.html"
 
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return redirect("home")
+    def get_success_url(self):
+        print("entrou")
+        # Redireciona com base na verificação de is_administrator
+        if self.request.user.is_authenticated and self.request.user.is_administrator:
+            return reverse_lazy("admin-index")
+        else:
+            return reverse_lazy("home")
+
+
+def adminView(request):
+    return render(request, "administrador/admin_index.html")
