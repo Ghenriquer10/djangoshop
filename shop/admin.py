@@ -19,6 +19,7 @@ class CustomUserAdmin(UserAdmin):
                     "phone",
                     "address",
                     "is_administrator",
+                    "papel",
                 )
             },
         ),
@@ -40,6 +41,7 @@ class CustomUserAdmin(UserAdmin):
                     "phone",
                     "address",
                     "is_administrator",
+                    "papel",
                 ),
             },
         ),
@@ -52,6 +54,7 @@ class CustomUserAdmin(UserAdmin):
         "address",
         "is_staff",
         "is_administrator",
+        "papel",
     )
     search_fields = ("email", "username", "phone")
 

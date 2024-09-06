@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from shop import index
+from .views import home, index
 from .views import CustomLoginView, adminView, home, signup
 
 administrador_patterns = [
@@ -26,7 +26,7 @@ urlpatterns = [
         name="login",
     ),
     path("signup/", signup, name="signup"),
-    path("", index, name="home"),
+    path("", index, name="index"),
     path("cliente/", include(cliente_patterns)),
     path("vendedor/", include(vendedor_patterns)),
     path("estoquista/", include(estoquista_patterns)),

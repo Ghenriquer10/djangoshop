@@ -17,6 +17,7 @@ def index(request):
     user = request.user
     if user.is_authenticated:
         papel = user.get_papel()
+        print(papel)
         if papel == PapeisDeUsuario.ADMINISTRADOR:
             return redirect(reverse("admin-index"))
         elif papel == PapeisDeUsuario.CLIENTE:
@@ -50,14 +51,6 @@ def signup(request):
 class CustomLoginView(LoginView):
     form_class = CustomLoginForm
     template_name = "registration/login.html"
-
-    def get_success_url(self):
-        print("entrou")
-        # Redireciona com base na verificação de is_administrator
-        if self.request.user.is_authenticated and self.request.user.is_administrator:
-            return reverse_lazy("admin-index")
-        else:
-            return reverse_lazy("home")
 
 
 def adminView(request):
